@@ -3,5 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/settings"
         android:title="Settings"
-        app:showAsAction="never"/>
+        android:icon="@drawable/settingg"
+        app:showAsAction="always"/>
 </menu>

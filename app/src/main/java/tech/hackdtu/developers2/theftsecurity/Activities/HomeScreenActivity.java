@@ -70,7 +70,6 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.menu1, menu);
-        // Associate searchable configuration with the SearchView
         return true;
     }
 

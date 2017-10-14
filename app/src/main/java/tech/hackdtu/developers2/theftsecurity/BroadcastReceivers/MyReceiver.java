@@ -30,6 +30,7 @@ public class MyReceiver extends BroadcastReceiver {
                 if (mp.isPlaying()) {
                     mp.stop();
                     MyService.mSensorManager.unregisterListener((SensorEventListener) MyService.ctx);
+                    MyService.doneOnce = false;
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString("isLocked", "no");
                     editor.commit();

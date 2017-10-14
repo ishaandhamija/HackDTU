@@ -31,6 +31,7 @@ public class MyService extends Service implements SensorEventListener {
     public static final String MyPREFERENCES = "MyPrefs" ;
 
     public static MediaPlayer mp;
+    public static Boolean doneOnce = false;
 
     public MyService() {
     }
@@ -64,13 +65,16 @@ public class MyService extends Service implements SensorEventListener {
             } else {
                 Log.d("durr", "onSensorChanged: ");
                 if ((sharedpreferences.getString("isLocked", null) != null)
-                    && (sharedpreferences.getString("isLocked", null).equals("yes"))) {
+                    && (sharedpreferences.getString("isLocked", null).equals("yes"))
+                        && (doneOnce == true)) {
                     if (sharedpreferences.getString("alarmDelay", null) == null) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                mp = MediaPlayer.create(MyService.this, R.raw.siren);
-                                mp.start();
+                                if ((mp == null) || (!mp.isPlaying())) {
+                                    mp = MediaPlayer.create(MyService.this, R.raw.siren);
+                                    mp.start();
+                                }
                             }
                         }, 5000);
                     }
@@ -78,6 +82,7 @@ public class MyService extends Service implements SensorEventListener {
                 else {
 
                 }
+                doneOnce = true;
             }
         }
     }

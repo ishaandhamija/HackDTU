@@ -1,5 +1,6 @@
 package tech.hackdtu.developers2.theftsecurity.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -19,6 +20,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     ViewPagerAdapter adapter;
     LockFragment lockFragment;
     StationAlarmFragment stationAlarmFragment;
+
+    public static Integer REQ_CODE = 121;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +80,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settings:
+                startActivityForResult(new Intent(HomeScreenActivity.this, SettingsActivity.class), REQ_CODE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -90,5 +94,15 @@ public class HomeScreenActivity extends AppCompatActivity {
         adapter.addFragment(lockFragment, "Lock");
         adapter.addFragment(stationAlarmFragment,"Station Alarm");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 121 :
+
+                break;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

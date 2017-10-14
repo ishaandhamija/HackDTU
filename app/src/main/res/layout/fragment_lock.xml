@@ -3,4 +3,26 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="120sp"
+            android:layout_height="120sp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/padlock"
+            android:id="@+id/lock"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#c62828"
+            android:text="Lock your mobile to protect it"/>
+
+    </LinearLayout>
+
 </LinearLayout>

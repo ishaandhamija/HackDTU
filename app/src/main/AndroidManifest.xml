@@ -16,6 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Activities.SettingsActivity"/>
+
+        <receiver android:name=".Utils.MyAdmin" android:permission="android.app.action.DEVICE_ADMIN_ENABLED">
+            <meta-data android:name="android.app.device_admin"
+                android:resource="@xml/policies"/>
+
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

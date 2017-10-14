@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import tech.hackdtu.developers2.theftsecurity.R;
+import tech.hackdtu.developers2.theftsecurity.Services.MyService;
 import tech.hackdtu.developers2.theftsecurity.Utils.MyAdmin;
 
 import static android.content.Context.ACTIVITY_SERVICE;
@@ -63,6 +65,8 @@ public class LockFragment extends Fragment {
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString("isLocked", "yes");
                     editor.commit();
+                    Intent i = new Intent(getContext(), MyService.class);
+                    getContext().startService(i);
                     devicePolicyManager.lockNow();
 
                 }

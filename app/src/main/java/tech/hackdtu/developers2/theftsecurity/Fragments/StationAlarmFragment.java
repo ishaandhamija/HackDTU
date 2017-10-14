@@ -5,9 +5,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import tech.hackdtu.developers2.theftsecurity.R;
 
@@ -17,10 +30,42 @@ import tech.hackdtu.developers2.theftsecurity.R;
 
 public class StationAlarmFragment extends Fragment {
 
+    JSONArray obj;
+
+    Spinner spnFrom,spnTo;
+    String[] name ;
+    String Source,Destination;
+
+    Button btnSetAlarm;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        try {
+
+            obj = new JSONArray(loadJsonFromAsset());
+            name = new String[obj.length()];
+            for(int i=0;i<obj.length();i++)
+            {
+                try {
+                    JSONObject json = obj.getJSONObject(i);
+
+                    name[i] = json.getString("name");
+
+                    Log.d("234234", "onCreate: " + name[i]);
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            Log.d("123123", "onCreateView: " + obj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -29,6 +74,92 @@ public class StationAlarmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_station_alarm, container, false);
 
+        spnFrom = rootView.findViewById(R.id.spn_SelectSource);
+        spnTo = rootView.findViewById(R.id.spn_SelectDestination);
+
+        btnSetAlarm = rootView.findViewById(R.id.btn_SetAlarm);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_spinner_item,name);
+
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        spnTo.setAdapter(adapter);
+        spnFrom.setAdapter(adapter);
+
+
+        spnTo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Destination = spnTo.getSelectedItem().toString();
+                Log.d("124124", "onItemClick: " + Destination);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spnFrom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Source = spnFrom.getSelectedItem().toString();
+                Log.d("124124", "onItemSelected: " + Source);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        btnSetAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(DifferentStations()){
+
+                    Toast.makeText(getContext(), "Sucess Different Stations", Toast.LENGTH_SHORT).show();
+
+                }
+                else
+                {
+                    Toast.makeText(getContext(), "Please Select Different Stations", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         return rootView;
+    }
+
+
+
+    public String loadJsonFromAsset(){
+
+        String json = null;
+
+        try
+        {
+            InputStream is = this.getActivity().getAssets().open("metro.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return  json;
+    }
+
+
+    public boolean DifferentStations()
+    {
+        if(Source.equals(Destination))
+        {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -64,6 +64,7 @@ public class LockFragment extends Fragment {
                     editor.putString("isLocked", "yes");
                     editor.commit();
                     devicePolicyManager.lockNow();
+
                 }
                 else {
                     Toast.makeText(getContext(), "Activate Device Administrator in Settings", Toast.LENGTH_SHORT).show();

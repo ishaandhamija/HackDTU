@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tech.hackdtu.developers2.theftsecurity">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/icon"
@@ -17,6 +20,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Activities.SettingsActivity"/>
+        <activity android:name=".Activities.AlertActivity"/>
 
         <receiver android:name=".Utils.MyAdmin" android:permission="android.app.action.DEVICE_ADMIN_ENABLED">
             <meta-data android:name="android.app.device_admin"
@@ -31,6 +35,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".BroadcastReceivers.ConnectionChangeReceiver">
+            <intent-filter android:priority="100">
+                <action android:name="android.net.wifi.STATE_CHANGE"/>
             </intent-filter>
         </receiver>
 

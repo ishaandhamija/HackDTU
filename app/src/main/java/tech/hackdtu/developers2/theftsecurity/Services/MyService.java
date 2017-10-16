@@ -78,9 +78,17 @@ public class MyService extends Service implements SensorEventListener {
                             }
                         }, 5000);
                     }
-                }
-                else {
-
+                    else {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if ((mp == null) || (!mp.isPlaying())) {
+                                    mp = MediaPlayer.create(MyService.this, R.raw.siren);
+                                    mp.start();
+                                }
+                            }
+                        }, Integer.parseInt(sharedpreferences.getString("alarmDelay", null)) * 1000);
+                    }
                 }
                 doneOnce = true;
             }

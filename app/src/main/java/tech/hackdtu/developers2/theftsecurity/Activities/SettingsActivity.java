@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -28,6 +29,8 @@ public class SettingsActivity extends AppCompatActivity {
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
 
+    EditText delayTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,12 @@ public class SettingsActivity extends AppCompatActivity {
         devicePolicyManager = (DevicePolicyManager) getSystemService(DEVICE_POLICY_SERVICE);
         activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         componentName = new ComponentName(this, MyAdmin.class);
+
+        delayTime = (EditText) findViewById(R.id.delayTime);
+
+        if (sharedpreferences.getString("alarmDelay", null) != null) {
+            delayTime.setText(sharedpreferences.getString("alarmDelay", null));
+        }
 
         adminswitch = (Switch) findViewById(R.id.adminswitch);
         if (sharedpreferences.getString("admin", null) != null) {
@@ -86,5 +95,13 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBackPressed() {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("alarmDelay", delayTime.getText().toString());
+        editor.commit();
+        super.onBackPressed();
     }
 }

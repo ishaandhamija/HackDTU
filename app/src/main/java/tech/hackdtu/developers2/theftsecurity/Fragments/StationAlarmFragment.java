@@ -21,7 +21,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
+import tech.hackdtu.developers2.theftsecurity.PoJo.Metro;
 import tech.hackdtu.developers2.theftsecurity.R;
 
 /**
@@ -35,6 +37,10 @@ public class StationAlarmFragment extends Fragment {
     Spinner spnFrom,spnTo;
     String[] name ;
     String Source,Destination;
+    int length;
+    public static int from,to,flag=0;
+
+    public static ArrayList<Metro> metro = new ArrayList<>();
 
     Button btnSetAlarm;
 
@@ -46,13 +52,16 @@ public class StationAlarmFragment extends Fragment {
 
             obj = new JSONArray(loadJsonFromAsset());
             name = new String[obj.length()];
+            length = obj.length();
             for(int i=0;i<obj.length();i++)
             {
                 try {
                     JSONObject json = obj.getJSONObject(i);
 
                     name[i] = json.getString("name");
-
+                    JSONObject xJson = json.getJSONObject("details");
+                    Metro thisMetro = new Metro(json.getString("name"),xJson.getString("line"),xJson.getString("latitude"),xJson.getString("longitude"));
+                    metro.add(thisMetro);
                     Log.d("234234", "onCreate: " + name[i]);
 
 
@@ -117,7 +126,27 @@ public class StationAlarmFragment extends Fragment {
             public void onClick(View view) {
                 if(DifferentStations()){
 
-                    Toast.makeText(getContext(), "Sucess Different Stations", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "Sucess Different Stations", Toast.LENGTH_SHORT).show();
+                    Log.d("234234", "onClick: " + length);
+                    for(int i=0;i<length;i++)
+                    {
+                        Log.d("12341234", "onClick: " + metro.get(i).getName());
+                        Log.d("1231234", "onClick: " + metro.get(i).getLine());
+                        if(metro.get(i).getName().equals(Source) && metro.get(i).getLine().equals("[\"Yellow Line\"]"))
+                        {
+//                            Toast.makeText(getContext(), "Source on Yellow Line", Toast.LENGTH_SHORT).show();
+                            from = i;
+                            Log.d("234234", "onClick: " + from);
+                        }
+                        else if(metro.get(i).getName().equals(Destination) && metro.get(i).getLine().equals("[\"Yellow Line\"]"))
+                        {
+//                            Toast.makeText(getContext(), "Destination on Yellow Line", Toast.LENGTH_SHORT).show();
+                            to = i;
+                            Log.d("234234", "onClick: " + to);
+                        }
+                    }
+
+
 
                 }
                 else
